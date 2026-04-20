@@ -1,4 +1,5 @@
 import type { Seller } from "@/data/sellers";
+import { Instagram } from "lucide-react";
 
 export function SellerCard({ seller }: { seller: Seller }) {
   return (
@@ -33,9 +34,7 @@ export function SellerCard({ seller }: { seller: Seller }) {
             <p className="mt-0.5 truncate text-sm text-muted-foreground">@{seller.handle}</p>
           </div>
           <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-foreground transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M7 17L17 7M17 7H8M17 7v9" />
-            </svg>
+            <Instagram className="h-4 w-4" strokeWidth={2.2} />
           </span>
         </div>
         <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">{seller.description}</p>

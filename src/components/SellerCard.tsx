@@ -19,9 +19,13 @@ export function SellerCard({ seller }: { seller: Seller }) {
         />
       </div>
 
-      <div className="absolute left-4 top-4">
+      <div className="absolute left-4 right-4 top-4 flex items-center justify-between gap-2">
         <span className="inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-medium tracking-wide text-foreground backdrop-blur-sm">
           {seller.category}
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-foreground/90 px-2.5 py-1 text-[10px] font-medium uppercase tracking-widest text-background backdrop-blur-sm">
+          <Instagram className="h-3 w-3" strokeWidth={2.4} />
+          Instagram
         </span>
       </div>
 

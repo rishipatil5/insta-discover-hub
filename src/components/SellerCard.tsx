@@ -1,4 +1,5 @@
 import type { Seller } from "@/data/sellers";
+import { Instagram } from "lucide-react";
 
 export function SellerCard({ seller }: { seller: Seller }) {
   return (
@@ -18,9 +19,13 @@ export function SellerCard({ seller }: { seller: Seller }) {
         />
       </div>
 
-      <div className="absolute left-4 top-4">
+      <div className="absolute left-4 right-4 top-4 flex items-center justify-between gap-2">
         <span className="inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-medium tracking-wide text-foreground backdrop-blur-sm">
           {seller.category}
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-foreground/90 px-2.5 py-1 text-[10px] font-medium uppercase tracking-widest text-background backdrop-blur-sm">
+          <Instagram className="h-3 w-3" strokeWidth={2.4} />
+          Instagram
         </span>
       </div>
 
@@ -33,9 +38,7 @@ export function SellerCard({ seller }: { seller: Seller }) {
             <p className="mt-0.5 truncate text-sm text-muted-foreground">@{seller.handle}</p>
           </div>
           <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-foreground transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M7 17L17 7M17 7H8M17 7v9" />
-            </svg>
+            <Instagram className="h-4 w-4" strokeWidth={2.2} />
           </span>
         </div>
         <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">{seller.description}</p>

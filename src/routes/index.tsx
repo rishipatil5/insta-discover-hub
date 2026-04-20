@@ -77,7 +77,7 @@ function Index() {
 
             <div className="mt-10 flex items-center gap-6 text-sm text-muted-foreground">
               <div>
-                <div className="font-display text-2xl font-semibold text-foreground">{SELLERS.length}+</div>
+                <div className="font-display text-2xl font-semibold text-foreground">{sellers.length}+</div>
                 <div className="mt-0.5 text-xs uppercase tracking-widest">Shops listed</div>
               </div>
               <div className="h-8 w-px bg-border" />

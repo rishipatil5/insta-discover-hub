@@ -1,11 +1,12 @@
-import { Link } from "@tanstack/react-router";
 import type { Seller } from "@/data/sellers";
 
 export function SellerCard({ seller }: { seller: Seller }) {
   return (
-    <Link
-      to="/seller/$handle"
-      params={{ handle: seller.handle }}
+    <a
+      href={`https://instagram.com/${seller.handle}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${seller.name} on Instagram`}
       className="group relative block overflow-hidden rounded-3xl bg-card shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
     >
       <div className="aspect-[4/5] overflow-hidden">
@@ -39,6 +40,6 @@ export function SellerCard({ seller }: { seller: Seller }) {
         </div>
         <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">{seller.description}</p>
       </div>
-    </Link>
+    </a>
   );
 }

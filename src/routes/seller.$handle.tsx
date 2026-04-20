@@ -50,7 +50,7 @@ function SellerPage() {
           </div>
           {gallery.length > 1 && (
             <div className="mt-4 grid grid-cols-3 gap-4">
-              {gallery.slice(1, 4).map((g, i) => (
+              {gallery.slice(1, 4).map((g: string, i: number) => (
                 <div key={i} className="overflow-hidden rounded-2xl">
                   <img src={g} alt="" className="aspect-square w-full object-cover" />
                 </div>

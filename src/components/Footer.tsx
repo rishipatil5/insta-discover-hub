@@ -32,8 +32,10 @@ export function Footer() {
           </p>
         </div>
       </div>
-      <div className="border-t border-border/60 px-5 py-6 text-center text-xs text-muted-foreground md:px-8">
-        © {new Date().getFullYear()} kiosk. Made with care for small shops.
+      <div className="flex flex-col items-center justify-center gap-2 border-t border-border/60 px-5 py-6 text-center text-xs text-muted-foreground md:flex-row md:gap-4 md:px-8">
+        <span>© {new Date().getFullYear()} kiosk. Made with care for small shops.</span>
+        <span className="hidden md:inline">·</span>
+        <Link to="/admin" className="hover:text-foreground">Admin</Link>
       </div>
     </footer>
   );

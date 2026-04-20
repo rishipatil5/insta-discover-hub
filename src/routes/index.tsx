@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { CATEGORIES, SELLERS, type Category } from "@/data/sellers";
+import { useEffect, useMemo, useState } from "react";
+import { CATEGORIES, SELLERS, type Category, type Seller } from "@/data/sellers";
 import { SellerCard } from "@/components/SellerCard";
+import { supabase } from "@/integrations/supabase/client";
+import { mergeSellers } from "@/lib/sellers-merge";
 import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -11,11 +13,28 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState<Category | "All">("All");
+  const [sellers, setSellers] = useState<Seller[]>(SELLERS);
 
-  const featured = useMemo(() => SELLERS.filter((s) => s.featured).slice(0, 3), []);
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("seller_submissions")
+      .select("id, name, handle, category, description, image_url, location")
+      .eq("status", "approved")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+        setSellers(mergeSellers(data));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const featured = useMemo(() => sellers.filter((s) => s.featured).slice(0, 3), [sellers]);
 
   const filtered = useMemo(() => {
-    return SELLERS.filter((s) => {
+    return sellers.filter((s) => {
       const matchCat = active === "All" || s.category === active;
       const q = query.trim().toLowerCase();
       const matchQ =
@@ -26,7 +45,7 @@ function Index() {
         s.description.toLowerCase().includes(q);
       return matchCat && matchQ;
     });
-  }, [query, active]);
+  }, [query, active, sellers]);
 
   return (
     <>
@@ -58,7 +77,7 @@ function Index() {
 
             <div className="mt-10 flex items-center gap-6 text-sm text-muted-foreground">
               <div>
-                <div className="font-display text-2xl font-semibold text-foreground">{SELLERS.length}+</div>
+                <div className="font-display text-2xl font-semibold text-foreground">{sellers.length}+</div>
                 <div className="mt-0.5 text-xs uppercase tracking-widest">Shops listed</div>
               </div>
               <div className="h-8 w-px bg-border" />

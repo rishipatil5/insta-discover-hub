@@ -1,10 +1,17 @@
 import type { Seller } from "@/data/sellers";
 import { Instagram, MapPin } from "lucide-react";
 
+const INSTAGRAM_URL_OVERRIDES: Partial<Record<string, string>> = {
+  ima_handmades: "https://www.instagram.com/ima_handmades?igsh=MjVwYXphdXpjaGdq",
+};
+
 export function SellerCard({ seller }: { seller: Seller }) {
+  const instagramUrl =
+    INSTAGRAM_URL_OVERRIDES[seller.handle] ?? `https://instagram.com/${seller.handle}`;
+
   return (
     <a
-      href={`https://instagram.com/${seller.handle}`}
+      href={instagramUrl}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Open ${seller.name} on Instagram`}
@@ -17,7 +24,6 @@ export function SellerCard({ seller }: { seller: Seller }) {
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
-        {/* Top gradient for badge legibility */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/35 to-transparent" />
 
         <div className="absolute left-4 right-4 top-4 flex items-center justify-between gap-2">

@@ -3,8 +3,10 @@ import { Instagram, MapPin } from "lucide-react";
 
 const INSTAGRAM_URL_OVERRIDES: Partial<Record<string, string>> = {
   ima_handmades: "https://www.instagram.com/ima_handmades?igsh=MjVwYXphdXpjaGdq",
+  saumic_craft_: "https://www.instagram.com/saumic_craft_?igsh=N2lxaXo2Y2w5cGli",
+  handmade_by_snehal_: "https://www.instagram.com/handmade_by_snehal_?igsh=MWw0dnhhemE3M2xocQ==",
+  aishwaryamlifestyle: "https://www.instagram.com/aishwaryamlifestyle?igsh=b3Vld2s3MGN0OXZh",
 };
-
 export function SellerCard({ seller }: { seller: Seller }) {
   const instagramUrl =
     INSTAGRAM_URL_OVERRIDES[seller.handle] ?? `https://instagram.com/${seller.handle}`;
@@ -60,3 +62,5 @@ export function SellerCard({ seller }: { seller: Seller }) {
     </a>
   );
 }
+
+

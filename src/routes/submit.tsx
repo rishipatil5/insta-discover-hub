@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CATEGORIES } from "@/data/sellers";
 import { supabase } from "@/integrations/supabase/client";
+import { sendSubmissionNotification } from "@/api/send-notification";
 
 export const Route = createFileRoute("/submit")({
   head: () => ({
@@ -51,6 +52,23 @@ function SubmitPage() {
       setError(error.message);
       return;
     }
+
+    // Send notification emails to admins
+    try {
+      await sendSubmissionNotification({
+        name: form.name.trim(),
+        handle: form.handle.trim().replace(/^@/, ""),
+        category: form.category,
+        description: form.description.trim(),
+        location: form.location.trim() || null,
+        image_url: form.image_url.trim() || null,
+        submitter_email: form.submitter_email.trim() || null,
+      });
+    } catch (emailError) {
+      console.error("Failed to send notification email:", emailError);
+      // Don't show error to user - submission was successful
+    }
+
     setSubmitted(true);
   };
 

@@ -56,13 +56,15 @@ function SubmitPage() {
     // Send notification emails to admins
     try {
       await sendSubmissionNotification({
-        name: form.name.trim(),
-        handle: form.handle.trim().replace(/^@/, ""),
-        category: form.category,
-        description: form.description.trim(),
-        location: form.location.trim() || null,
-        image_url: form.image_url.trim() || null,
-        submitter_email: form.submitter_email.trim() || null,
+        data: {
+          name: form.name.trim(),
+          handle: form.handle.trim().replace(/^@/, ""),
+          category: form.category,
+          description: form.description.trim(),
+          location: form.location.trim() || null,
+          image_url: form.image_url.trim() || null,
+          submitter_email: form.submitter_email.trim() || null,
+        },
       });
     } catch (emailError) {
       console.error("Failed to send notification email:", emailError);

@@ -1,9 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-const ADMIN_EMAILS = ["rishipatil0048@gmail.com", "mahajangunjan20@gmail.com"];
+const ADMIN_EMAILS = ["mahajangunjan20@gmail.com"];
 
 interface SubmissionData {
   name: string;
@@ -15,8 +13,17 @@ interface SubmissionData {
   submitter_email?: string | null;
 }
 
-async function sendEmailsToAdmins(submission: SubmissionData) {
-  try {
+export const sendSubmissionNotification = createServerFn({ method: "POST" })
+  .inputValidator((data: SubmissionData) => data)
+  .handler(async ({ data: submission }) => {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error("RESEND_API_KEY is not configured");
+      return { success: false, error: "Email service not configured" };
+    }
+
+    const resend = new Resend(apiKey);
+
     const emailContent = `
       <h2>New Shop Submission</h2>
       <p><strong>Shop Name:</strong> ${submission.name}</p>
@@ -26,36 +33,31 @@ async function sendEmailsToAdmins(submission: SubmissionData) {
       ${submission.location ? `<p><strong>Location:</strong> ${submission.location}</p>` : ""}
       ${submission.image_url ? `<p><strong>Image URL:</strong> <a href="${submission.image_url}">${submission.image_url}</a></p>` : ""}
       ${submission.submitter_email ? `<p><strong>Submitter Email:</strong> ${submission.submitter_email}</p>` : ""}
-      <p><br><a href="https://your-admin-panel.com/submissions" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Review Submission</a></p>
     `;
 
-    const results = await Promise.allSettled(
-      ADMIN_EMAILS.map((email) =>
-        resend.emails.send({
-          from: "noreply@insta-discover-hub.com",
-          to: email,
-          subject: `New Shop Submission: ${submission.name}`,
-          html: emailContent,
-        })
-      )
-    );
+    try {
+      const results = await Promise.allSettled(
+        ADMIN_EMAILS.map((email) =>
+          resend.emails.send({
+            from: "kiosk <onboarding@resend.dev>",
+            to: email,
+            subject: `New Shop Submission: ${submission.name}`,
+            html: emailContent,
+          })
+        )
+      );
 
-    // Log results
-    results.forEach((result, index) => {
-      if (result.status === "fulfilled") {
-        console.log(`Email sent to ${ADMIN_EMAILS[index]}:`, result.value);
-      } else {
-        console.error(`Email failed for ${ADMIN_EMAILS[index]}:`, result.reason);
-      }
-    });
+      results.forEach((result, index) => {
+        if (result.status === "fulfilled") {
+          console.log(`Email sent to ${ADMIN_EMAILS[index]}:`, result.value);
+        } else {
+          console.error(`Email failed for ${ADMIN_EMAILS[index]}:`, result.reason);
+        }
+      });
 
-    return { success: true };
-  } catch (error) {
-    console.error("Error sending notification email:", error);
-    throw error;
-  }
-}
-
-export const sendSubmissionNotification = createServerFn({
-  method: "POST",
-}).handler(sendEmailsToAdmins);
+      return { success: true };
+    } catch (error) {
+      console.error("Error sending notification email:", error);
+      return { success: false, error: String(error) };
+    }
+  });

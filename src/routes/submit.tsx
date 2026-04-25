@@ -124,8 +124,8 @@ function SubmitPage() {
         <Field label="Cover image URL" hint="optional — paste a square photo link">
           <input type="url" value={form.image_url} onChange={update("image_url")} placeholder="https://…" className={inputCls} />
         </Field>
-        <Field label="Your email" hint="optional — so we can reach you">
-          <input type="email" value={form.submitter_email} onChange={update("submitter_email")} placeholder="you@example.com" className={inputCls} />
+        <Field label="Your email" hint="required — we'll reply here">
+          <input required type="email" value={form.submitter_email} onChange={update("submitter_email")} placeholder="you@example.com" className={inputCls} />
         </Field>
 
         {error && (

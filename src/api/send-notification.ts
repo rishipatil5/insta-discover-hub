@@ -35,14 +35,19 @@ export const sendSubmissionNotification = createServerFn({ method: "POST" })
       ${submission.submitter_email ? `<p><strong>Submitter Email:</strong> ${submission.submitter_email}</p>` : ""}
     `;
 
+    const fromName = submission.submitter_email
+      ? `${submission.name} via kiosk`
+      : "kiosk";
+
     try {
       const results = await Promise.allSettled(
         ADMIN_EMAILS.map((email) =>
           resend.emails.send({
-            from: "kiosk <onboarding@resend.dev>",
+            from: `${fromName} <onboarding@resend.dev>`,
             to: email,
             subject: `New Shop Submission: ${submission.name}`,
             html: emailContent,
+            replyTo: submission.submitter_email || undefined,
           })
         )
       );
